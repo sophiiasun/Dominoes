@@ -1,124 +1,165 @@
-#Author: Thomas Wang
-#Date: May 5th 2020
-#Purpose: To Develop the beginnings of the Domino class for future use
-#-=-=-==-=-=-==-=--==-=-=-=--==--==-=-=-=--==-=-=--=-=-=-=-=-=--=-=-=-=-=-=
-
-from tkinter import *
-from Domino import Domino
-from DominoHand import DominoHand
-from DominoTable import DominoTable
-from DominoGame import DominoGame
 import random
 
-window = Tk()
-window.resizable(0, 0)
-window.config(padx=10, pady=10, bg="slateblue4")
+class Domino:
+    def __init__(self, value=-1, size=37, orientation="H", status=True):
+        if (value < 0 or value > 77):
+            self.randomize()
+        else:
+            self.val=value
+        self.sze = size
+        if (size < 30 and size > 100):
+            size = 60
+        self.ori = orientation
+        if (orientation != "H" and orientation != "V"):
+            orientation = "H"
+        self.dia = self.sze // 5
+        self.gap = self.dia // 2
+        self.stt = status
 
-# ============================= M E T H O D S =============================
-###Process during in-Game
-##def inGame():
-##    while (GAMEBOARD.hand[0].size > 0 and GAMEBOARD.hand[1].size > 0 and GAMEBOARD.hand[2].size > 0 and GAMEBOARD.hand[3].size > 0):
-##        p = GAMEBOARD.turn
-##        if (p > 0): # Comp turn
-##            GAMEBOARD.getCompMove(p)
-##        else: # Player turn
-##            
-##        GAMEBOARD.turn = (p + 1) % 4
-##
-### Enables/disables the domino choices accordingly to what the player can/cannot place down
-##def checkPlayerChoices():
-##    if (GAMEBOARD.hands[0][0] // 10):
-##        
-##
-### Checks the winner of this round
-##def checkWinner():
-##    if (GAMEBOARD.hand[0].size == 0):
-##        messagebox.showinfo(title="Congratulations!", message="You won this game! You're too good!!\nClick 'Start Game' for a new game.")
-##    else:
-##        messagebox.showinfo(title="Boohoohoo!", message="You lost this game! Try harder next time!\nClick 'Start Game' for a new game.")
-##
-##def startGame():
-##    GAMEBOARD.deal() # Deal dominoes to each player
-##    p = GAMEBOARD.turn
-##    if (p == 0):
-##        dom7B.config(state="normal")
-##    else: # Comp goes first
-##        GAMEBOARD.hands[p].dropDomino(66)
-##        GAMEBOARD.table.addToTable(Domino(66))
-##        
-##    inGame()
+    def __str__(self):
+        return (str(self.val//10) + str(self.val%10))
 
-# ============================= O B J E C T S =============================
-oMessage = StringVar()
-oDom1 = StringVar()
-oDom2 = StringVar()
-oDom3 = StringVar()
-oDom4 = StringVar()
-oDom5 = StringVar()
-oDom6 = StringVar()
-oDom7 = StringVar()
-oMessage.set("Start a New Game!")
-oDom1.set("")
-oDom2.set("")
-oDom3.set("")
-oDom4.set("")
-oDom5.set("")
-oDom6.set("")
-oDom7.set("")
+    def getValue(self):
+        self.val = objValue.get()
+        return
 
-# ============================= W I D G E T S =============================
+    def setValue(self, value):
+        self.val=value
+        return
 
-#Create
-title = Label(window, text=" ------- DOMINOES ------- ", font="Courier 40 bold", bg="seashell1")
-label = Label(window, width=59, textvariable=oMessage, font="Courier 18", bg="seashell1")
-#Place
-title.grid(row=1, column=1, columnspan=9, pady=(0, 10))
-label.grid(row=2, column=1, columnspan=9, pady=(0, 10))
+    def flip(self):
+        Y = self.val % 10
+        X = self.val // 10
+        self.val = Y*10 + X
+        return
 
-# GAME BOARD: -------------------------------------------------------------
+    def setOrientation(self, orientation):
+        self.ori = orientation
+        return
 
-# Domino size: 20 by 40
-# Domino gap: 5
-# Width of U and D LFs: 620
-# Height of U and D LFs: 45
-# Width of L and R LFs: 85
-# Height of L and R LFs: 340
+    def setSize(self, size):
+        self.sze = size
+        self.dia = self.sze // 5
+        self.gap = self.dia // 2
 
-#Create
-playerLC = Canvas(window, width=85, height=340, relief="ridge", bg="seashell1")
-playerRC = Canvas(window, width=85, height=340, relief="ridge", bg="seashell1")
-playerUC = Canvas(window, width=620, height=45, relief="ridge", bg="seashell1")
-playerDC = Canvas(window, width=620, height=45, relief="ridge", bg="seashell3")
-gameBoardC = Canvas(window, width=620, height=340, relief="ridge", bg="mediumpurple4")
-#Place
-playerLC.grid(row=4, column=1, padx=(0, 10), pady=(0, 10))
-playerUC.grid(row=3, column=2, columnspan=7, padx=(0, 10), pady=(0, 10))
-playerRC.grid(row=4, column=9, pady=(0, 10))
-playerDC.grid(row=5, column=2, columnspan=7, padx=(0, 10), pady=(0, 10))
-gameBoardC.grid(row=4, column=2, columnspan=7, padx=(0, 10), pady=(0, 10))
+    def setFace(self, faceup):
+        self.stt = faceup
 
-# USER CONTROLS: ----------------------------------------------------------
+    def randomize(self):
+        self.val = random.randint(1, 6)*10 + random.randint(1, 6)
 
-#Create
-skipB = Button(window, width=6, text="SKIP", font="Courier 15 bold", bg="lavenderblush2", state="disabled")
-dom1B = Button(window, width=6, textvariable=oDom1, font="Courier 15", bg="lavenderblush3", state="disabled")
-dom2B = Button(window, width=6, textvariable=oDom2, font="Courier 15", bg="lavenderblush3", state="disabled")
-dom3B = Button(window, width=6, textvariable=oDom3, font="Courier 15", bg="lavenderblush3", state="disabled")
-dom4B = Button(window, width=6, textvariable=oDom4, font="Courier 15", bg="lavenderblush3", state="disabled")
-dom5B = Button(window, width=6, textvariable=oDom5, font="Courier 15", bg="lavenderblush3", state="disabled")
-dom6B = Button(window, width=6, textvariable=oDom6, font="Courier 15", bg="lavenderblush3", state="disabled")
-dom7B = Button(window, width=6, textvariable=oDom7, font="Courier 15", bg="lavenderblush3", state="disabled")
-placeB = Button(window, width=6, text="PLACE", font="Courier 15 bold", bg="lavenderblush2", state="disabled")
-#Place
-skipB.grid(row=6, column=1)
-dom1B.grid(row=6, column=2)
-dom2B.grid(row=6, column=3)
-dom3B.grid(row=6, column=4)
-dom4B.grid(row=6, column=5)
-dom5B.grid(row=6, column=6)
-dom6B.grid(row=6, column=7)
-dom7B.grid(row=6, column=8)
-placeB.grid(row=6, column=9)
+    def draw(self, canvas, x=0, y=0):
+        self.drawHalf(canvas, x, y, self.val//10)
+        if (self.ori=="H"):
+            self.drawHalf(canvas, x+self.sze, y, self.val%10)
+        else:
+            self.drawHalf(canvas, x, y+self.sze, self.val%10)
 
-# GAME OBJECTS
-GAMEBOARD = DominoGame(DominoHand(), DominoHand(), DominoHand(), DominoHand(), DominoTable(gameBoardC, 330, 270))
+    def shiftDraw(self, canvas, x=0, y=0):
+        self.shiftDrawHalf(canvas, x, y, self.val//10)
+        if (self.ori=="H"):
+            self.shiftDrawHalf(canvas, x+self.sze, y, self.val%10)
+        else:
+            self.shiftDrawHalf(canvas, x, y+self.sze, self.val%10)
+
+    def drawHalf(self, canvas, x, y, value):
+        canvas.create_rectangle(x, y, x+self.sze, y+self.sze, width=1, outline="black", fill="white")
+        if (self.stt == True):
+            g = self.gap
+            d = self.dia
+            if (value == 1):
+                canvas.create_oval(x+g+d+g, y+g+d+g, x+g+d+g+d, y+g+d+g+d, fill="black") #5
+            elif (value==2 or value==3 or value==4 or value==5 or value==6):
+                canvas.create_oval(x+g, y+g, x+g+d, y+g+d, fill="black") #1
+                canvas.create_oval(x+g+d+g+d+g, y+g+d+g+d+g, x+g+d+g+d+g+d, y+g+d+g+d+g+d, fill="black") #9
+                if (value==3 or value==5):
+                    canvas.create_oval(x+g+d+g, y+g+d+g, x+g+d+g+d, y+g+d+g+d, fill="black") #5
+                if (value==4 or value==5 or value==6):
+                    canvas.create_oval(x+g+d+g+d+g, y+g, x+g+d+g+d+g+d, y+g+d, fill="black") #3
+                    canvas.create_oval(x+g, y+g+d+g+d+g, x+g+d, y+g+d+g+d+g+d, fill="black") #7
+                if (value==6):
+                    canvas.create_oval(x+g+d+g, y+g, x+g+d+g+d, y+g+d, fill="black") #2
+                    canvas.create_oval(x+g+d+g, y+g+d+g+d+g, x+g+d+g+d, y+g+d+g+d+g+d, fill="black") #8
+
+    def shiftDrawHalf(self, canvas, x, y, value):
+        const = 2
+        canvas.create_rectangle(x, y, x+self.sze, y+self.sze, width=1, outline="black", fill="white")
+        if (self.stt == True):
+            g = self.gap
+            d = self.dia
+            if (value == 1):
+                canvas.create_oval(x+g+d+g+const, y+g+d+g+const, x+g+d+g+d+const, y+g+d+g+d+const, fill="black") #5
+            elif (value==2 or value==3 or value==4 or value==5 or value==6):
+                canvas.create_oval(x+g+const, y+g+const, x+g+d+const, y+g+d+const, fill="black") #1
+                canvas.create_oval(x+g+d+g+d+g+const, y+g+d+g+d+g+const, x+g+d+g+d+g+d+const, y+g+d+g+d+g+d+const, fill="black") #9
+                if (value==3 or value==5):
+                    canvas.create_oval(x+g+d+g+const, y+g+d+g+const, x+g+d+g+d+const, y+g+d+g+d+const, fill="black") #5
+                if (value==4 or value==5 or value==6):
+                    canvas.create_oval(x+g+d+g+d+g+const, y+g+const, x+g+d+g+d+g+d+const, y+g+d+const, fill="black") #3
+                    canvas.create_oval(x+g+const, y+g+d+g+d+g+const, x+g+d+const, y+g+d+g+d+g+d+const, fill="black") #7
+                if (value==6):
+                    canvas.create_oval(x+g+d+g+const, y+g+const, x+g+d+g+d+const, y+g+d+const, fill="black") #2
+                    canvas.create_oval(x+g+d+g+const, y+g+d+g+d+g+const, x+g+d+g+d+const, y+g+d+g+d+g+d+const, fill="black") #8  
+
+    def __add__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)+(b1*10+b2))
+
+    def __sub__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)-(b1*10+b2))
+
+    def __mul__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)*(b1*10+b2))
+
+    def __gt__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)>(b1*10+b2))
+
+    def __ge__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)>=(b1*10+b2))
+
+    def __lt__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)<(b1*10+b2))
+
+    def __le__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)<=(b1*10+b2))
+
+    def __eq__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)==(b1*10+b2))
+
+    def __ne__(self, domino):
+        a1 = min(self.val // 10, self.val % 10)
+        a2 = max(self.val // 10, self.val % 10)
+        b1 = min(domino.val // 10, domino.val % 10)
+        b2 = max(domino.val // 10, domino.val % 10)
+        return ((a1*10+a2)!=(b1*10+b2))
