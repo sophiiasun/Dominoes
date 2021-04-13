@@ -1,3 +1,10 @@
+# Credits: ===============================================================
+# Authors: Sophia Sun, Thomas Wang 
+# Date: June 25, 2020
+# Purpose: Dominoes Game with GUI Interface
+# Note: Special Thanks to Mr. Smith of ICU3U1 at Milliken Mills High School
+# ========================================================================
+
 import random
 import DominoTable
 import DominoHand
