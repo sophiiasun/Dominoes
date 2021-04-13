@@ -1,3 +1,4 @@
+# Credits : Sophia Sun + Thomas Wang 
 from tkinter import *
 from Domino import Domino
 from DominoHand import DominoHand
@@ -11,7 +12,6 @@ window.resizable(0, 0)
 window.config(padx=10, pady=10, bg="slateblue4")
 
 # ============================= M E T H O D S =============================
-
 # Disabled all the user command buttons until it reaches their turn
 def disableAll():
     if (oGameOver.get() == 1):
