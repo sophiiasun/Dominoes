@@ -1,4 +1,4 @@
-# Credits : Sophia Sun + Thomas Wang 
+# Credits: Sophia Sun + Thomas Wang 
 from tkinter import *
 from Domino import Domino
 from DominoHand import DominoHand
